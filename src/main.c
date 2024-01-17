@@ -6,51 +6,33 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/16 19:43:51 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:31:49 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
 static char		**free_and_null(char *map1, char *line);
+static bool		check_invalid_extension(char *file);
+static bool		multiple_new_lines(char *map);
 static char		**extract_map(char *argv);
+
 
 #include <stdio.h>
 int	main(int argc, char **argv)
 {
-	/*void	*mlx_ptr; // Pointer to mlx structure
-	void	*win_ptr; // Pointer to the window
-
-	int		width;
-	int		height;
-	int		i = 0;
-
-	width = 800;
-	height = 600; 
-
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, width, height, "so_long");
-
-	mlx_hook(win_ptr, 2, 1L<<0, mlx_destroy_window, mlx_ptr); // Closing window management
-
-	mlx_loop(mlx_ptr); // Maintain display
-
-	while (i < 500)
-	{
-		mlx_pixel_put(mlx_ptr, win_ptr, 100, i, RGB(0, 0, 255));
-		i++;
-	}*/
-
 	char 	**map;
 	ssize_t	i;
 
 	// Creates map
 	map = extract_map(argv[1]);
 	if (!map)
+	{
+		printf("Error");
 		return 0;
-	
-	if (!parsing(map))
-		printf("Parsing error");
+	}
+	if (!parsing(map) || !check_invalid_extension(argv[1]))
+		printf("Error");
 	else
 	{
 		// Displays map
@@ -98,7 +80,7 @@ static char	**extract_map(char *argv)
 		map1 = ft_strjoin(map1, line);
 		free(line);
 		line = get_next_line(ber_file);
-		if (!map1)
+		if (!map1 || !multiple_new_lines(map1))
 			return (free_and_null(map1, line));
 	}
 	map2 = ft_split(map1, '\n');
@@ -112,4 +94,23 @@ static char	**free_and_null(char *map1, char *line)
 	free(map1);
 	free(line);
 	return (NULL);
+}
+
+static bool	multiple_new_lines(char *map)
+{
+	ssize_t	i;
+
+	i = -1;
+	while (i++, map[i])
+		if (map[i] == '\n' && map[i + 1] && map[i + 1] == '\n')
+			return (false);
+	return (true);
+}
+
+static bool	check_invalid_extension(char *file)
+{
+	size_t	i;
+
+	i = ft_strlen(file);
+	return (i >= 5 && file[i - 3] == '.' && file[i - 2] == 'b' && file[i - 1] == 'e' && file[i - 0] == 'r');
 }
