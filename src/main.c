@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/17 22:31:49 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:19:22 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 	map = extract_map(argv[1]);
 	if (!map)
 	{
-		printf("Error");
+		printf("Error map");
 		return 0;
 	}
 	if (!parsing(map) || !check_invalid_extension(argv[1]))
@@ -112,5 +112,6 @@ static bool	check_invalid_extension(char *file)
 	size_t	i;
 
 	i = ft_strlen(file);
-	return (i >= 5 && file[i - 3] == '.' && file[i - 2] == 'b' && file[i - 1] == 'e' && file[i - 0] == 'r');
+	printf("%c\n", file[i-3]);
+	return (i >= 5 && file[i - 4] == '.' && file[i - 3] == 'b' && file[i - 2] == 'e' && file[i - 1] == 'r');
 }
