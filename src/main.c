@@ -6,112 +6,144 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/18 13:19:22 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:42:07 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
-
-static char		**free_and_null(char *map1, char *line);
-static bool		check_invalid_extension(char *file);
-static bool		multiple_new_lines(char *map);
-static char		**extract_map(char *argv);
-
-
+#include "../minilibx-linux/mlx.h"
 #include <stdio.h>
-int	main(int argc, char **argv)
+#include <X11/X.h>
+#include <X11/keysym.h>
+
+// cc mlx.c -Iminilibx-linux -Lminilibx-linux -lmlx -lX11 -lXext -lm
+
+int		fill_background(t_game game);
+int	key_pressed(int keycode, t_game *game);
+
+
+
+int main(int argc, char **argv)
 {
-	char 	**map;
-	ssize_t	i;
+    t_game	game;
+	void	*image;
 
-	// Creates map
-	map = extract_map(argv[1]);
-	if (!map)
-	{
-		printf("Error map");
-		return 0;
-	}
-	if (!parsing(map) || !check_invalid_extension(argv[1]))
-		printf("Error");
-	else
-	{
-		// Displays map
-		i = 0;
-		while (map[i])
-		{
-			printf("line = %s\n", map[i]);
-			i++;
-		}
-	}
-	
-	// Frees map
-	i = -1;
-	while (i++, map[i])
-		free(map[i]);
-	
-	free(map);
+	game.map = extract_n_parse(argv);
+	if (!game.map)
+		return (0);
 
-	return (0);
+    // Initialisation de la structure game
+    game.mlx = mlx_init();
+	game.map_height = ft_strlen2d(game.map) * TILE_SIZE;
+	game.map_width = ft_strlen(game.map[0]) * TILE_SIZE;
+	printf("width  = %d\nheigth = %d\n", game.map_width, game.map_height);
+    game.window = mlx_new_window(game.mlx, game.map_width, game.map_height, "so_long");
+
+	//fill_background(game);
+	draw_map(&game, -1, -1);
+
+	mlx_hook(game.window, KeyRelease, KeyReleaseMask, &key_pressed, &game);
+
+    // Boucler jusqu'à ce que la fenêtre soit fermée
+    mlx_loop(game.mlx);
+
+    return 0;
 }
 
 /*
-	Extracts the map
-																			"1111"
-	open("../map.ber", O_RDONLY)	=>		"1111\n1001\n1111"		=> 		"1001"
-																			"1111"
-*/																
+	----------------------------------
+	----------------------------------
+*/
 
-static char	**extract_map(char *argv)
+int	key_pressed(int keycode, t_game *game)
 {
-	int		ber_file;	// STEP 1
-	char	*map1;		// STEP 2
-	char	**map2;		// STEP 3
-	char	*line;
+	int	error;
 
-	ber_file = open(argv, O_RDONLY);
-	if (!ber_file)
-		return (NULL);
-	map1 = ft_strdup("");
-	line = get_next_line(ber_file);
-	if (!map1 || !line)
-		return (free_and_null(map1, line));
-	while (line)
+	error = 0;
+	if (keycode == XK_Escape)
 	{
-		map1 = ft_strjoin(map1, line);
-		free(line);
-		line = get_next_line(ber_file);
-		if (!map1 || !multiple_new_lines(map1))
-			return (free_and_null(map1, line));
+		printf("STOP\n");
+		mlx_loop_end(game->mlx);
 	}
-	map2 = ft_split(map1, '\n');
-	free(map1);
-	free(line);
-	return (map2);
+	if (keycode == XK_w)
+		error = go_up(game, 'P');
+	if (keycode == XK_a)
+		error = go_left(game, 'P');
+	if (keycode == XK_s)
+		error = go_down(game, 'P');
+	if (keycode == XK_d)
+		error = go_right(game, 'P');
+	if (keycode == KEY_UP)
+		error = go_up(game, 'E');
+	if (keycode == KEY_LEFT)
+		error = go_left(game, 'E');
+	if (keycode == KEY_DOWN)
+		error = go_down(game, 'E');
+	if (keycode == KEY_RIGHT)
+		error = go_right(game, 'E');
+	return (error);
 }
 
-static char	**free_and_null(char *map1, char *line)
+int		draw_map(t_game *game, int i, int j)
 {
-	free(map1);
-	free(line);
-	return (NULL);
-}
-
-static bool	multiple_new_lines(char *map)
-{
-	ssize_t	i;
+	void	*image;
+	int		x;
+	int		y;
 
 	i = -1;
-	while (i++, map[i])
-		if (map[i] == '\n' && map[i + 1] && map[i + 1] == '\n')
-			return (false);
-	return (true);
+	y = TILE_SIZE * (-1);
+	while (y += TILE_SIZE, i++, game->map[i])
+	{
+		j = -1;
+		x = TILE_SIZE * (-1);
+		while (x += TILE_SIZE, j++, game->map[i][j])
+		{
+			image = mlx_xpm_file_to_image(game->mlx, "assets/map/background50.xpm", &game->img_width, &game->img_heigth);
+			if (game->map[i][j] == '1' && image)
+				image = mlx_xpm_file_to_image(game->mlx, "assets/map/wall50.xpm", &game->img_width, &game->img_heigth);
+			else if (game->map[i][j] == 'E' && image)
+			{
+				game->exit_y = i;
+				game->exit_x = j;
+				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/exit50.xpm", &game->img_width, &game->img_heigth);
+			}
+			else if (game->map[i][j] == 'C' && image)
+				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/collectible50.xpm", &game->img_width, &game->img_heigth);
+			else if (game->map[i][j] == 'P' && image)
+			{
+				game->player_y = i;
+				game->player_x = j;
+				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/player50.xpm", &game->img_width, &game->img_heigth);
+			}
+			if (!image)
+					return (printf("fail\n"), -1);
+			mlx_put_image_to_window(game->mlx, game->window, image, x, y);
+		}
+	}
+	
+	return (0);
 }
 
-static bool	check_invalid_extension(char *file)
+int	fill_background(t_game game)
 {
-	size_t	i;
-
-	i = ft_strlen(file);
-	printf("%c\n", file[i-3]);
-	return (i >= 5 && file[i - 4] == '.' && file[i - 3] == 'b' && file[i - 2] == 'e' && file[i - 1] == 'r');
+	int		i;
+	int		j;
+	int		width;
+	int		height;
+	void	*image;
+	
+	i = 0;
+	while (i < game.map_width)
+	{
+		j = TILE_SIZE * (-1);
+		while(j+= TILE_SIZE, j < game.map_height)
+		{
+			image = mlx_xpm_file_to_image(game.mlx, "assets/map/background50.xpm", &width, &height);
+			if (!image)
+				return (printf("fail\n"), -1);
+			mlx_put_image_to_window(game.mlx, game.window, image, i, j);
+		}
+		i += TILE_SIZE;
+	}
+	return (0);
 }

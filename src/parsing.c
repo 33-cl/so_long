@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:47:10 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/18 13:17:35 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:53:33 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,17 @@ bool	parsing(char **map)
 {
 	char	**filled_map;
 	int		player_X;
-	int		player_Y;	
+	int		player_Y;
+	size_t	i;
 
 	if (!check_close_rectangle(map))
 		return (false);
-
 	if (!check_map_content(map))
 		return (false);
-	
-
 	get_player_position(map, &player_X, &player_Y);
-	
 	map_fill(map, player_X, player_Y);
-
 	if (!check_empty_map(map))
 		return (false);
-
 	return (true);
 }
 
