@@ -42,6 +42,8 @@ typedef struct	s_game{
 	int		player_y;
 	int		exit_x;
 	int		exit_y;
+	int		items_collected;
+	int		nb_items;
 }t_game;
 
 size_t	ft_strlen2d(char **tab);
