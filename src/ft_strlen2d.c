@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 20:49:23 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/25 21:01:25 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:12:48 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 size_t	ft_strlen2d(char **tab)
 {

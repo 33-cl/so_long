@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 static char	*ft_fill_join(char *str, char const *s1, char const *s2)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 /*
 	Allocates and returns a new string from *s

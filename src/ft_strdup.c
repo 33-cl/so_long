@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 char	*ft_strdup(const char *s)
 {

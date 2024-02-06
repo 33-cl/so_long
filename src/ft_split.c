@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:18:58 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/16 13:57:35 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:12:34 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 static int	ft_len_word(char const *s, char c)
 {

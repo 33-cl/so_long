@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/26 19:42:07 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:13:14 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 #include "../minilibx-linux/mlx.h"
 #include <stdio.h>
 #include <X11/X.h>
@@ -21,42 +21,44 @@
 //int		fill_background(t_game game);
 int	key_pressed(int keycode, t_game *game);
 
+int	free_game(t_game *game)
+{
+	size_t	i;
 
+	i = 0;
+	mlx_destroy_window(game->mlx, game->window);
+	i = -1;
+    while (i++, game->map[i])
+		free(game->map[i]);
+    free(game->map);
+    free(game->mlx);
+	return (0);
+}
 
 int main(int argc, char **argv)
 {
     t_game	game;
-    size_t	i;
 
 	game.map = extract_n_parse(argv);
 	if (!game.map)
-		return (0);
-
-    // Initialisation de la structure game
+		return (free_game(&game), 0);
     game.mlx = mlx_init();
+	if (!game.mlx)
+		return (free_game(&game), 0);
 	game.map_height = ft_strlen2d(game.map) * TILE_SIZE;
 	game.map_width = ft_strlen(game.map[0]) * TILE_SIZE;
-	printf("width  = %d\nheigth = %d\n", game.map_width, game.map_height);
     game.window = mlx_new_window(game.mlx, game.map_width, game.map_height, "so_long");
-    	game.items_collected = 0;
-
-	//fill_background(game) and initialises nb_items at the same time;
+	if (!game.window)
+		return(free_game(&game), 0);
+    game.items_collected = 0;
 	game.nb_items = draw_map(&game, -1, -1);
-
-	mlx_hook(game.window, KeyRelease, KeyReleaseMask, &key_pressed, &game);
-
-    // Boucler jusqu'à ce que la fenêtre soit fermée
-    mlx_loop(game.mlx);
-
-    // Liberation de la memoire
-    mlx_destroy_window(game.mlx, game.window);
-    i = -1;
-    while (i++, game.map[i])
-	free(game.map[i]);
-    free(game.map);
-    free(game.mlx);
-
-    return 0;
+	if (game.nb_items == -1)
+		return (free_game(&game), 0);
+	game.nb_steps = 0;
+	mlx_hook(game.window, 2, 1L << 0, &key_pressed, &game);
+	mlx_loop(game.mlx);
+	free_game(&game);
+	return 0;
 }
 
 /*
@@ -133,11 +135,9 @@ int		draw_map(t_game *game, int i, int j)
 			if (!image)
 					return (printf("fail\n"), -1);
 			mlx_put_image_to_window(game->mlx, game->window, image, x, y);
-			// Liberation de la memoire de l'image affichee
 			mlx_destroy_image(game->mlx, image);
 		}
 	}
-
 	return (nb_items);
 }
 /*

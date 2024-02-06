@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 18:39:04 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/26 18:50:12 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:12:10 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 #include <stdio.h>
 
 /*
@@ -51,11 +51,13 @@ char	**extract_n_parse(char **argv)
 
 char	**extract_map(char *argv)
 {
-	int		ber_file;	// STEP 1
-	char	*map1;		// STEP 2
-	char	**map2;		// STEP 3
+	int		ber_file;
+	char	*map1;
+	char	**map2;
 	char	*line;
 
+	if (!argv)
+		return (NULL);
 	ber_file = open(argv, O_RDONLY);
 	if (!ber_file)
 		return (NULL);
@@ -99,7 +101,8 @@ bool	check_invalid_extension(char *file)
 {
 	size_t	i;
 
+	if (!file)
+		return (false);
 	i = ft_strlen(file);
-	printf("%c\n", file[i-3]);
 	return (i >= 5 && file[i - 4] == '.' && file[i - 3] == 'b' && file[i - 2] == 'e' && file[i - 1] == 'r');
 }

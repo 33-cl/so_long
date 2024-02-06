@@ -6,13 +6,13 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 17:18:32 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/16 12:52:40 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:12:58 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 size_t	ft_strlen(const char *s)
 {

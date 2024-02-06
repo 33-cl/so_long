@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:47:10 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/23 18:53:33 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:31:26 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 #include <stdbool.h>
 
 static void	get_player_position(char **map, int *player_X, int *player_Y);
@@ -24,10 +24,8 @@ static bool	check_empty_map(char **map);
 #include <stdio.h>
 bool	parsing(char **map)
 {
-	char	**filled_map;
 	int		player_X;
 	int		player_Y;
-	size_t	i;
 
 	if (!check_close_rectangle(map))
 		return (false);
@@ -149,7 +147,7 @@ static void	map_fill(char **map, int x, int y)
 	if (map[y - 1][x] == '0' || map[y - 1][x] == 'E' || map[y - 1][x] == 'C')
 		map_fill(map, x, y - 1);
 	if (map[y + 1][x] == '0' || map[y + 1][x] == 'E' || map[y + 1][x] == 'C')
-		map_fill(map, x, y + 1);	
+		map_fill(map, x, y + 1);
 }
 
 /*	

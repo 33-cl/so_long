@@ -6,11 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 13:46:39 by maeferre          #+#    #+#             */
-/*   Updated: 2024/01/16 15:15:31 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:13:02 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "so_long.h"
 
 char	*get_next_line(int fd)
 {
