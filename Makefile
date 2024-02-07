@@ -6,28 +6,42 @@
 #    By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 11:08:39 by maeferre          #+#    #+#              #
-#    Updated: 2024/02/06 16:09:56 by maeferre         ###   ########.fr        #
+#    Updated: 2024/02/07 17:46:45 by maeferre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
+NAME = so_long
 CC = cc
-CFLAGS = -Iminilibx-linux -Lminilibx-linux -lX11 -lXext
-SRC_DIR = src
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
-OBJ_FILES = $(SRC_FILES:%.c=%.o)
-EXEC = my_program
+STANDARD_FLAGS = -Wall -Wextra -Werror
+MLX_FLAGS = -Iminilibx-linux -Lminilibx-linux -lmlx -lX11 -lXext -lm -fsanitize=address -g3
+SRC_DIR = ./src/
+SRCS_FILES 		= $(addprefix ${SRC_DIR},\
+				main.c				\
+				movement.c			\
+				parsing.c			\
+				parsing_utils.c		\
+				ft_split.c			\
+				ft_strdup.c			\
+				ft_strjoin.c		\
+				ft_substr.c			\
+				ft_strlen2d.c		\
+				get_next_line.c		\
+				get_next_line_utils.c)
+OBJ_FILES = $(SRCS_FILES:%.c=%.o)
 
-all: $(EXEC)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(EXEC): $(OBJ_FILES)
-	$(CC) $(CFLAGS) $^ -o $@
+all: ${NAME}
 
 clean:
-	rm -f $(SRC_DIR)/*.o $(EXEC)
+	rm -f src/*.o
+
+fclean:
+	rm -f src/*.o ${NAME} 
+
+$(NAME) : $(OBJ_FILES)
+	$(CC) $(STANDARD_FLAGS) -o $(NAME) $(OBJ_FILES) $(MLX_FLAGS)
+
+%.o : %.c
+	$(CC) -o $@ -c $<
 
 .PHONY: all clean
-
