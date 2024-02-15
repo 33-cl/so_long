@@ -6,14 +6,14 @@
 #    By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 11:08:39 by maeferre          #+#    #+#              #
-#    Updated: 2024/02/14 21:32:03 by maeferre         ###   ########.fr        #
+#    Updated: 2024/02/15 19:17:35 by maeferre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 CC = cc
 STANDARD_FLAGS = -Wall -Wextra -Werror
-MLX_FLAGS = -Iminilibx-linux -Lminilibx-linux -lmlx -lX11 -lXext -lm -fsanitize=address -g3
+MLX_FLAGS = -Imlx -Lmlx -lmlx -lX11 -lXext -lm -fsanitize=address -g3
 SRC_DIR = ./src/
 SRCS_FILES 		= $(addprefix ${SRC_DIR},\
 				main.c				\
