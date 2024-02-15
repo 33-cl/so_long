@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maeferre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/11 19:57:18 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/15 18:25:38 by maeferre         ###   ########.fr       */
+/*   Created: 2024/02/15 19:07:20 by maeferre          #+#    #+#             */
+/*   Updated: 2024/02/15 19:09:16 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stddef.h>
 # include <stdbool.h>
 # include "get_next_line.h"
 
 // Minilibx related libraries
 # include <X11/X.h>
 # include <X11/keysym.h>
-# include "../minilibx-linux/mlx.h"
+# include "../mlx/mlx.h"
 
 # define COLLECTIBLE "assets/sprites/collectible50.xpm"
 # define BACKGROUND "assets/map/background50.xpm"

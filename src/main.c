@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maeferre <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/15 18:24:41 by maeferre         ###   ########.fr       */
+/*   Created: 2024/02/15 19:12:18 by maeferre          #+#    #+#             */
+/*   Updated: 2024/02/15 19:12:23 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include "../minilibx-linux/mlx.h"
-#include <X11/X.h>
-#include <X11/keysym.h>
 
 int	main(int argc, char **argv)
 {

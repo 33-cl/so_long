@@ -6,12 +6,11 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:11:44 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/14 22:44:33 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:12:47 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include "../minilibx-linux/mlx.h"
 
 static bool	write_infos(t_game *game)
 {
