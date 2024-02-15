@@ -6,7 +6,7 @@
 #    By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 11:08:39 by maeferre          #+#    #+#              #
-#    Updated: 2024/02/07 17:46:45 by maeferre         ###   ########.fr        #
+#    Updated: 2024/02/14 21:32:03 by maeferre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,28 +20,32 @@ SRCS_FILES 		= $(addprefix ${SRC_DIR},\
 				movement.c			\
 				parsing.c			\
 				parsing_utils.c		\
+				parsing_free.c		\
 				ft_split.c			\
 				ft_strdup.c			\
 				ft_strjoin.c		\
 				ft_substr.c			\
 				ft_strlen2d.c		\
+				ft_putnbr.c			\
+				ft_putstr.c			\
 				get_next_line.c		\
 				get_next_line_utils.c)
 OBJ_FILES = $(SRCS_FILES:%.c=%.o)
 
+.PHONY: all clean fclean re
 
 all: ${NAME}
-
-clean:
-	rm -f src/*.o
-
-fclean:
-	rm -f src/*.o ${NAME} 
 
 $(NAME) : $(OBJ_FILES)
 	$(CC) $(STANDARD_FLAGS) -o $(NAME) $(OBJ_FILES) $(MLX_FLAGS)
 
-%.o : %.c
+%.o : $(SRC_DIR)%.c
 	$(CC) -o $@ -c $<
 
-.PHONY: all clean
+clean: clean
+	rm -rf $(OBJ_FILES)
+
+fclean: clean
+	rm -rf $(NAME)
+
+re: clean all 

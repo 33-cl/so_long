@@ -18,7 +18,6 @@
 	has 'len' for maximal length
 */
 
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char		*new_string;

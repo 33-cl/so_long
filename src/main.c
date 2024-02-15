@@ -6,51 +6,33 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 13:10:03 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/05 17:13:14 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:24:41 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include "../minilibx-linux/mlx.h"
-#include <stdio.h>
 #include <X11/X.h>
 #include <X11/keysym.h>
 
-// cc mlx.c -Iminilibx-linux -Lminilibx-linux -lmlx -lX11 -lXext -lm
-
-//int		fill_background(t_game game);
-int	key_pressed(int keycode, t_game *game);
-
-int	free_game(t_game *game)
+int	main(int argc, char **argv)
 {
-	size_t	i;
+	t_game	game;
 
-	i = 0;
-	mlx_destroy_window(game->mlx, game->window);
-	i = -1;
-    while (i++, game->map[i])
-		free(game->map[i]);
-    free(game->map);
-    free(game->mlx);
-	return (0);
-}
-
-int main(int argc, char **argv)
-{
-    t_game	game;
-
+	if (argc != 2)
+		return (write(STDERR_FILENO, "Error\n", 6));
 	game.map = extract_n_parse(argv);
 	if (!game.map)
-		return (free_game(&game), 0);
-    game.mlx = mlx_init();
+		return (0);
+	game.mlx = mlx_init();
 	if (!game.mlx)
 		return (free_game(&game), 0);
 	game.map_height = ft_strlen2d(game.map) * TILE_SIZE;
 	game.map_width = ft_strlen(game.map[0]) * TILE_SIZE;
-    game.window = mlx_new_window(game.mlx, game.map_width, game.map_height, "so_long");
+	game.window = mlx_new_window(game.mlx, game.map_width, game.map_height, N);
 	if (!game.window)
-		return(free_game(&game), 0);
-    game.items_collected = 0;
+		return (free_game(&game), 0);
+	game.items_collected = 0;
 	game.nb_items = draw_map(&game, -1, -1);
 	if (game.nb_items == -1)
 		return (free_game(&game), 0);
@@ -58,7 +40,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.window, 2, 1L << 0, &key_pressed, &game);
 	mlx_loop(game.mlx);
 	free_game(&game);
-	return 0;
+	return (0);
 }
 
 /*
@@ -73,8 +55,8 @@ int	key_pressed(int keycode, t_game *game)
 	error = 0;
 	if (keycode == XK_Escape)
 	{
-		printf("STOP\n");
 		mlx_loop_end(game->mlx);
+		return (write(1, "STOP\n", 5));
 	}
 	if (keycode == XK_w)
 		error = go_up(game, 'P');
@@ -95,73 +77,72 @@ int	key_pressed(int keycode, t_game *game)
 	return (error);
 }
 
-int		draw_map(t_game *game, int i, int j)
+int	draw_tile(t_game *game, int nb_items, int i, int j)
 {
-	void	*image;
+	if (game->map[i][j] == '0')
+		game->image = mlx_xpm_file_to_image(game->mlx, BACKGROUND,
+				&game->img_width, &game->img_heigth);
+	else if (game->map[i][j] == '1')
+		game->image = mlx_xpm_file_to_image(game->mlx, WALL,
+				&game->img_width, &game->img_heigth);
+	else if (game->map[i][j] == 'E')
+	{
+		game->exit_y = i;
+		game->exit_x = j;
+		game->image = mlx_xpm_file_to_image(game->mlx, EXIT,
+				&game->img_width, &game->img_heigth);
+	}
+	else if (nb_items++, game->map[i][j] == 'C')
+		game->image = mlx_xpm_file_to_image(game->mlx, COLLECTIBLE,
+				&game->img_width, &game->img_heigth);
+	else if (game->map[i][j] == 'P')
+	{
+		game->player_y = i;
+		game->player_x = j;
+		game->image = mlx_xpm_file_to_image(game->mlx, PLAYER,
+				&game->img_width, &game->img_heigth);
+	}
+	return (nb_items);
+}
+
+int	draw_map(t_game *game, int i, int j)
+{
 	int		x;
 	int		y;
 	int		nb_items;
 
-	nb_items = 0;
+	nb_items = -1;
 	i = -1;
-	y = TILE_SIZE * (-1);
-	while (y += TILE_SIZE, i++, game->map[i])
+	y = 0;
+	while (i++, game->map[i])
 	{
 		j = -1;
-		x = TILE_SIZE * (-1);
-		while (x += TILE_SIZE, j++, game->map[i][j])
+		x = 0;
+		while (j++, game->map[i][j])
 		{
-			if (game->map[i][j] == '0')
-				image = mlx_xpm_file_to_image(game->mlx, "assets/map/background50.xpm", &game->img_width, &game->img_heigth);
-			else if (game->map[i][j] == '1')
-				image = mlx_xpm_file_to_image(game->mlx, "assets/map/wall50.xpm", &game->img_width, &game->img_heigth);
-			else if (game->map[i][j] == 'E')
-			{
-				game->exit_y = i;
-				game->exit_x = j;
-				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/exit50.xpm", &game->img_width, &game->img_heigth);
-			}
-			else if (game->map[i][j] == 'C')
-			{	
-				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/collectible50.xpm", &game->img_width, &game->img_heigth);
-				nb_items++;
-			}
-			else if (game->map[i][j] == 'P')
-			{
-				game->player_y = i;
-				game->player_x = j;
-				image = mlx_xpm_file_to_image(game->mlx, "assets/sprites/player50.xpm", &game->img_width, &game->img_heigth);
-			}
-			if (!image)
-					return (printf("fail\n"), -1);
-			mlx_put_image_to_window(game->mlx, game->window, image, x, y);
-			mlx_destroy_image(game->mlx, image);
+			nb_items = draw_tile(game, nb_items, i, j);
+			if (!game->image)
+				return (write(STDERR_FILENO, "fail\n", 5), -1);
+			mlx_put_image_to_window(game->mlx, game->window, game->image, x, y);
+			mlx_destroy_image(game->mlx, game->image);
+			x += TILE_SIZE;
 		}
+		y += TILE_SIZE;
 	}
 	return (nb_items);
 }
-/*
-int	fill_background(t_game game)
+
+int	free_game(t_game *game)
 {
-	int		i;
-	int		j;
-	int		width;
-	int		height;
-	void	*image;
-	
+	size_t	i;
+
 	i = 0;
-	while (i < game.map_width)
-	{
-		j = TILE_SIZE * (-1);
-		while(j+= TILE_SIZE, j < game.map_height)
-		{
-			image = mlx_xpm_file_to_image(game.mlx, "assets/map/background50.xpm", &width, &height);
-			if (!image)
-				return (printf("fail\n"), -1);
-			mlx_put_image_to_window(game.mlx, game.window, image, i, j);
-			free(image);
-		}
-		i += TILE_SIZE;
-	}
+	if (game->window)
+		mlx_destroy_window(game->mlx, game->window);
+	i = -1;
+	while (i++, game->map[i])
+		free(game->map[i]);
+	free(game->map);
+	free(game->mlx);
 	return (0);
-}*/
+}

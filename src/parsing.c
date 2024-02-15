@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:47:10 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/05 23:31:26 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/02/14 22:44:05 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,21 @@
 #include <stdbool.h>
 
 static void	get_player_position(char **map, int *player_X, int *player_Y);
-
 static bool	check_close_rectangle(char **map);
 static bool	check_map_content(char **map);
 static void	map_fill(char **map, int x, int y);
-static bool	check_empty_map(char **map);
 
-
-#include <stdio.h>
 bool	parsing(char **map)
 {
-	int		player_X;
-	int		player_Y;
+	int	player_x;
+	int	player_y;
 
 	if (!check_close_rectangle(map))
 		return (false);
 	if (!check_map_content(map))
 		return (false);
-	get_player_position(map, &player_X, &player_Y);
-	map_fill(map, player_X, player_Y);
+	get_player_position(map, &player_x, &player_y);
+	map_fill(map, player_x, player_y);
 	if (!check_empty_map(map))
 		return (false);
 	return (true);
@@ -50,14 +46,15 @@ static bool	check_close_rectangle(char **map)
 {
 	ssize_t		i;
 	ssize_t		j;
-	
+
 	i = -1;
 	j = -1;
 	while (j++, map[0][j])
 		if (map[0][j] != '1')
 			return (false);
 	while (i++, map[i + 1] != NULL)
-		if (j != ft_strlen(map[i]) || map[i][0] != '1' || map[i][j - 1] != '1')
+		if ((size_t)j != ft_strlen(map[i]) || map[i][0] != '1'
+			|| map[i][j - 1] != '1')
 			return (false);
 	j = -1;
 	while (j++, map[i][j])
@@ -101,7 +98,6 @@ static bool	check_map_content(char **map)
 	return (entrance == 1 && exit == 1 && item >= 1);
 }
 
-
 /*
 	Assigns to player_X and player_Y the value of the player's position
 */
@@ -110,18 +106,21 @@ static void	get_player_position(char **map, int *player_X, int *player_Y)
 {
 	ssize_t	i;
 	ssize_t	j;
-	
+
 	i = -1;
 	while (i++, map[i])
 	{
-		j = -1;
-		while (j++, map[i][j])
+		j = 0;
+		while (map[i][j])
+		{
 			if (map[i][j] == 'P')
 			{
 				*player_X = j;
 				*player_Y = i;
 				return ;
-			}	
+			}
+			j++;
+		}
 	}
 }
 
@@ -148,26 +147,4 @@ static void	map_fill(char **map, int x, int y)
 		map_fill(map, x, y - 1);
 	if (map[y + 1][x] == '0' || map[y + 1][x] == 'E' || map[y + 1][x] == 'C')
 		map_fill(map, x, y + 1);
-}
-
-/*	
-	Verifies the map is empty
-*/
-
-static bool	check_empty_map(char **map)
-{
-	ssize_t		i;
-	size_t		j;
-
-	i = -1;
-	while (i++, map[i])
-	{
-		j = -1;
-		while (j++, map[i][j])
-		{
-			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'X')
-				return (false);
-		}
-	}
-	return (true);
 }

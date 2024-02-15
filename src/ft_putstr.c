@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen2d.c                                      :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 20:49:23 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/13 22:08:19 by maeferre         ###   ########.fr       */
+/*   Created: 2024/02/13 22:06:39 by maeferre          #+#    #+#             */
+/*   Updated: 2024/02/14 19:20:39 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-size_t	ft_strlen2d(char **tab)
+int	ft_putstr(char *s)
 {
-	size_t	i;
+	int	length;
 
-	i = 0;
-	while (tab[i] != NULL)
-		i++;
-	return (i);
+	if (!s)
+	{
+		if (write(1, "(null)", 6) == -1)
+			return (-1);
+		return (6);
+	}
+	length = ft_strlen(s);
+	if (length >= 0)
+		if (write(1, s, length) == -1)
+			return (-1);
+	return (length);
 }
