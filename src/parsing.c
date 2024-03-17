@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:47:10 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/14 22:44:05 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:36:22 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ bool	parsing(char **map)
 	int	player_x;
 	int	player_y;
 
+	if (ft_strlen(*map) > MAX_SCREEN_WIDTH
+		|| ft_strlen2d(map) > MAX_SCREEN_HEIGHT)
+		return (false);
 	if (!check_close_rectangle(map))
 		return (false);
 	if (!check_map_content(map))
@@ -46,12 +49,14 @@ static bool	check_close_rectangle(char **map)
 {
 	ssize_t		i;
 	ssize_t		j;
+	size_t		len_lines;
 
 	i = -1;
 	j = -1;
 	while (j++, map[0][j])
 		if (map[0][j] != '1')
 			return (false);
+	len_lines = j;
 	while (i++, map[i + 1] != NULL)
 		if ((size_t)j != ft_strlen(map[i]) || map[i][0] != '1'
 			|| map[i][j - 1] != '1')
@@ -60,7 +65,7 @@ static bool	check_close_rectangle(char **map)
 	while (j++, map[i][j])
 		if (map[i][j] != '1')
 			return (false);
-	return (true);
+	return (ft_strlen(map[i]) == len_lines);
 }
 
 /*	
@@ -139,12 +144,12 @@ static void	get_player_position(char **map, int *player_X, int *player_Y)
 static void	map_fill(char **map, int x, int y)
 {
 	map[y][x] = 'X';
-	if (map[y][x + 1] == '0' || map[y][x + 1] == 'E' || map[y][x + 1] == 'C')
+	if (map[y][x + 1] == '0' || map[y][x + 1] == 'C')
 		map_fill(map, x + 1, y);
-	if (map[y][x - 1] == '0' || map[y][x - 1] == 'E' || map[y][x - 1] == 'C')
+	if (map[y][x - 1] == '0' || map[y][x - 1] == 'C')
 		map_fill(map, x - 1, y);
-	if (map[y - 1][x] == '0' || map[y - 1][x] == 'E' || map[y - 1][x] == 'C')
+	if (map[y - 1][x] == '0' || map[y - 1][x] == 'C')
 		map_fill(map, x, y - 1);
-	if (map[y + 1][x] == '0' || map[y + 1][x] == 'E' || map[y + 1][x] == 'C')
+	if (map[y + 1][x] == '0' || map[y + 1][x] == 'C')
 		map_fill(map, x, y + 1);
 }

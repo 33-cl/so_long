@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 19:11:44 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/15 19:12:47 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:25:47 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	go_up(t_game *game, char player)
 	if (*up_tile == 'E' && game->nb_items == game->items_collected
 		&& player == 'P')
 		mlx_loop_end(game->mlx);
-	else if (*up_tile == 'C')
+	else if (*up_tile == 'C' && player == 'P')
 		game->items_collected++;
 	if (player == 'P' && (*up_tile == '0' || *up_tile == 'C'))
 	{
@@ -53,10 +53,9 @@ bool	go_up(t_game *game, char player)
 	{
 		game->map[game->exit_y][game->exit_x] = '0';
 		game->map[game->exit_y - 1][game->exit_x] = 'E';
+		return (draw_move_exit(game, 'W'));
 	}
-	if (!draw_map(game, -1, -1))
-		return (false);
-	return (true);
+	return (draw_move_player(game, 'W'));
 }
 
 bool	go_down(t_game *game, char player)
@@ -67,7 +66,7 @@ bool	go_down(t_game *game, char player)
 	if (*down_tile == 'E' && game->nb_items == game->items_collected
 		&& player == 'P')
 		mlx_loop_end(game->mlx);
-	if (*down_tile == 'C')
+	if (*down_tile == 'C' && player == 'P')
 		game->items_collected++;
 	if (player == 'P' && (*down_tile == '0' || *down_tile == 'C'))
 	{
@@ -81,10 +80,9 @@ bool	go_down(t_game *game, char player)
 	{
 		game->map[game->exit_y][game->exit_x] = '0';
 		game->map[game->exit_y + 1][game->exit_x] = 'E';
+		return (draw_move_exit(game, 'S'));
 	}
-	if (!draw_map(game, -1, -1))
-		return (false);
-	return (true);
+	return (draw_move_player(game, 'S'));
 }
 
 bool	go_left(t_game *game, char player)
@@ -95,7 +93,7 @@ bool	go_left(t_game *game, char player)
 	if (*left_tile == 'E' && game->nb_items == game->items_collected
 		&& player == 'P')
 		mlx_loop_end(game->mlx);
-	if (*left_tile == 'C')
+	if (*left_tile == 'C' && player == 'P')
 		game->items_collected++;
 	if (player == 'P' && (*left_tile == 'C' || *left_tile == '0'))
 	{
@@ -109,10 +107,9 @@ bool	go_left(t_game *game, char player)
 	{
 		game->map[game->exit_y][game->exit_x] = '0';
 		game->map[game->exit_y][game->exit_x - 1] = 'E';
+		return (draw_move_exit(game, 'A'));
 	}
-	if (!draw_map(game, -1, -1))
-		return (false);
-	return (true);
+	return (draw_move_player(game, 'A'));
 }
 
 bool	go_right(t_game *game, char player)
@@ -123,7 +120,7 @@ bool	go_right(t_game *game, char player)
 	if (*right_tile == 'E' && game->nb_items == game->items_collected
 		&& player == 'P')
 		mlx_loop_end(game->mlx);
-	if (*right_tile == 'C')
+	if (*right_tile == 'C' && player == 'P')
 		game->items_collected++;
 	if (player == 'P' && (*right_tile == '0' || *right_tile == 'C'))
 	{
@@ -137,8 +134,7 @@ bool	go_right(t_game *game, char player)
 	{
 		game->map[game->exit_y][game->exit_x] = '0';
 		game->map[game->exit_y][game->exit_x + 1] = 'E';
+		return (draw_move_exit(game, 'D'));
 	}
-	if (!draw_map(game, -1, -1))
-		return (false);
-	return (true);
+	return (draw_move_player(game, 'D'));
 }

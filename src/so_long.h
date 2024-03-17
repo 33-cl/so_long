@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maeferre <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 19:07:20 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/15 19:09:16 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:02:55 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 
 # define N "so_long"
 # define TILE_SIZE 50
+# define MAX_SCREEN_WIDTH 75
+# define MAX_SCREEN_HEIGHT 35
 
 # define KEY_UP 65362
 # define KEY_LEFT 65361
@@ -41,11 +43,11 @@
 typedef struct s_game
 {
 	char	**map;
-	void	*window;
+	void	*win;
 	void	*mlx;
 	int		map_height;
 	int		map_width;
-	int		img_heigth;
+	int		img_height;
 	int		img_width;
 	int		player_x;
 	int		player_y;
@@ -65,13 +67,14 @@ char	*ft_strdup(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
+void	ft_bzero(void *b, size_t n);
 
 // Free functions
 int		free_game(t_game *game);
 void	free_map(char **map);
 char	**free_and_null(char *map1, char *line);
 
-// Map related functions
+// Map functions
 bool	parsing(char **map);
 bool	check_invalid_extension(char *file);
 bool	check_empty_map(char **map);
@@ -79,8 +82,12 @@ bool	multiple_new_lines(char *map);
 char	**extract_map(char *argv);
 char	**extract_n_parse(char **argv);
 int		draw_map(t_game *game, int i, int j);
+void	get_players_position(t_game *game);
+int		draw_move_player(t_game *game, char movement);
+int		draw_move_exit(t_game *game, char movement);
+int		close_window(t_game *game);
 
-// User related functions
+// User functions
 bool	go_up(t_game *game, char player);
 bool	go_down(t_game *game, char player);
 bool	go_left(t_game *game, char player);

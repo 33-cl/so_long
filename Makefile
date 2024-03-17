@@ -6,14 +6,14 @@
 #    By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 11:08:39 by maeferre          #+#    #+#              #
-#    Updated: 2024/02/15 19:17:35 by maeferre         ###   ########.fr        #
+#    Updated: 2024/03/17 21:07:27 by maeferre         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 CC = cc
 STANDARD_FLAGS = -Wall -Wextra -Werror
-MLX_FLAGS = -Imlx -Lmlx -lmlx -lX11 -lXext -lm -fsanitize=address -g3
+MLX_FLAGS = -Imlx -Lmlx -lmlx -lX11 -lXext -lm
 SRC_DIR = ./src/
 SRCS_FILES 		= $(addprefix ${SRC_DIR},\
 				main.c				\
@@ -21,6 +21,7 @@ SRCS_FILES 		= $(addprefix ${SRC_DIR},\
 				parsing.c			\
 				parsing_utils.c		\
 				parsing_free.c		\
+				draw.c				\
 				ft_split.c			\
 				ft_strdup.c			\
 				ft_strjoin.c		\
@@ -37,10 +38,10 @@ OBJ_FILES = $(SRCS_FILES:%.c=%.o)
 all: ${NAME}
 
 $(NAME) : $(OBJ_FILES)
-	$(CC) $(STANDARD_FLAGS) -o $(NAME) $(OBJ_FILES) $(MLX_FLAGS)
+	$(CC) -o $(NAME) $(OBJ_FILES) $(MLX_FLAGS)
 
-%.o : $(SRC_DIR)%.c
-	$(CC) -o $@ -c $<
+%.o : %.c
+	$(CC) $(STANDARD_FLAGS) -o $@ -c $<
 
 clean: clean
 	rm -rf $(OBJ_FILES)

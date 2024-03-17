@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 18:39:04 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/14 22:44:00 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:26:15 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	**extract_n_parse(char **argv)
 	char	**map;
 	char	**old_map;
 	bool	error;
-	ssize_t	i;
 
 	if (!argv)
 		return (write(STDERR_FILENO, "Error\n", 6), NULL);
@@ -58,11 +57,11 @@ char	**extract_map(char *argv)
 	char	*line;
 
 	ber_file = open(argv, O_RDONLY);
-	if (!ber_file)
+	if (ber_file == -1)
 		return (NULL);
-	map1 = ft_strdup("");
+	map1 = NULL;
 	line = get_next_line(ber_file);
-	if (!map1 || !line)
+	if (!line)
 		return (free_and_null(map1, line));
 	while (line)
 	{
@@ -115,7 +114,8 @@ bool	check_empty_map(char **map)
 		j = -1;
 		while (j++, map[i][j])
 		{
-			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'X')
+			if (map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'X'
+				&& map[i][j] != 'E')
 				return (false);
 		}
 	}

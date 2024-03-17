@@ -6,7 +6,7 @@
 /*   By: maeferre <maeferre@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 00:18:58 by maeferre          #+#    #+#             */
-/*   Updated: 2024/02/05 17:12:34 by maeferre         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:55:50 by maeferre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	nb_strings = ft_count_word(s, c);
-	tab = (char **)malloc(sizeof(char *) * (nb_strings + 1));
+	tab = malloc(sizeof(char *) * (nb_strings + 1));
 	if (!tab)
 		return (NULL);
 	tab[nb_strings] = NULL;

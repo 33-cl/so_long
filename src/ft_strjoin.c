@@ -43,7 +43,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t		len_total;
 	char		*str;
 
-	if (!s1 || !s2)
+	if (!s2)
 		return (NULL);
 	len_total = ft_strlen(s1) + ft_strlen(s2);
 	str = malloc(sizeof(char) * (len_total + 1));
